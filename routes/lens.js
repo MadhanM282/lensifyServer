@@ -45,6 +45,8 @@ function rowToRecord(row) {
     id: row.id,
     patientId: row.patient_id,
     patientName: row.patient_name,
+    age: row.patient_age ?? null,
+    gender: row.patient_gender ?? null,
     hvid: row.hvid || '',
     diameter: row.diameter || '',
     baseCurve: row.base_curve || '',
@@ -80,6 +82,8 @@ router.post('/', authMiddleware, async (req, res) => {
   const {
     patientId,
     patientName,
+    age,
+    gender,
     hvid = '',
     diameter = '',
     baseCurve = '',
@@ -140,11 +144,17 @@ router.post('/', authMiddleware, async (req, res) => {
   const flatLensColor = lensColor || odObj?.lensColor || osObj?.lensColor || null;
   const flatNotes = strOr(notes, '') || strOr(odObj?.notes, '') || strOr(osObj?.notes, '') || null;
 
+  const ageTrim = age != null && String(age).trim() !== '' ? String(age).trim() : null;
+  const genderVal =
+    gender === 'male' || gender === 'female' || gender === 'other' ? gender : null;
+
   const record = {
     id,
     user_id: req.userId,
     patient_id: pid,
     patient_name: (patientName || '').trim(),
+    patient_age: ageTrim,
+    patient_gender: genderVal,
     hvid: flatHvid,
     diameter: flatDia,
     base_curve: flatBc,

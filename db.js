@@ -18,6 +18,8 @@ const lensSchema = new mongoose.Schema(
     user_id: { type: String, required: true, index: true },
     patient_id: { type: String, required: true },
     patient_name: { type: String, required: true },
+    patient_age: { type: String, default: null },
+    patient_gender: { type: String, default: null },
     hvid: { type: String, default: '' },
     diameter: { type: String, default: '' },
     base_curve: { type: String, default: '' },
