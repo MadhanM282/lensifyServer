@@ -31,8 +31,12 @@ const lensSchema = new mongoose.Schema(
     spectacle_power: { type: String, default: null },
     notes: { type: String, default: null },
     created_at: { type: String, required: true, index: true },
+    saved_at: { type: String, default: null },
+    fitting_type: { type: String, enum: ['soft', 'hard'], default: null },
+    od_data: { type: mongoose.Schema.Types.Mixed, default: null },
+    os_data: { type: mongoose.Schema.Types.Mixed, default: null },
   },
-  { versionKey: false }
+  { versionKey: false, strict: true }
 );
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);

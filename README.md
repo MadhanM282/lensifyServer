@@ -2,6 +2,12 @@
 
 Node.js/Express backend for the **lensify** contact lens app. Handles user auth (JWT) and lens records (**MongoDB** via Mongoose).
 
+## Production
+
+Live API (Render): **https://lensifyserver.onrender.com**
+
+- Health check: `GET https://lensifyserver.onrender.com/health`
+
 ## Setup
 
 ```bash
@@ -30,6 +36,7 @@ Copy `.env.example` to `.env` and set:
 - `PORT` – Server port (default: 3000)
 - `JWT_SECRET` – Secret for JWT signing (**required in production**)
 - `MONGODB_URI` – MongoDB connection string (e.g. Atlas)
+- `PUBLIC_API_URL` – Optional; e.g. `https://lensifyserver.onrender.com`. When you run the API **locally**, startup logs and `GET /health` include this so you know which URL to point the mobile app at for testing.
 - `CORS_ORIGIN` – `*` for dev, or comma-separated origins in production
 
 ## API

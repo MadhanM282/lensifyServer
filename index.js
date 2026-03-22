@@ -8,6 +8,8 @@ const lensRoutes = require('./routes/lens');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const CORS_ORIGIN = process.env.CORS_ORIGIN || '*';
+/** Set in .env for local runs so logs/health show the deployed URL clients should use (e.g. Expo). */
+const PUBLIC_API_URL = (process.env.PUBLIC_API_URL || '').replace(/\/$/, '');
 
 const corsOptions = {
   origin(origin, callback) {
@@ -32,7 +34,11 @@ app.use('/auth', authRoutes);
 app.use('/lens', lensRoutes);
 
 app.get('/health', (req, res) => {
-  res.json({ ok: true, service: 'eyecare-api' });
+  const payload = { ok: true, service: 'eyecare-api' };
+  if (PUBLIC_API_URL) {
+    payload.publicUrl = PUBLIC_API_URL;
+  }
+  res.json(payload);
 });
 
 app.use((err, req, res, next) => {
@@ -44,6 +50,9 @@ async function startServer() {
   await initDb();
   app.listen(PORT, () => {
     console.log(`EyeCare API running at http://localhost:${PORT}`);
+    if (PUBLIC_API_URL) {
+      console.log(`Public API URL (for app / testing): ${PUBLIC_API_URL}`);
+    }
   });
 }
 
